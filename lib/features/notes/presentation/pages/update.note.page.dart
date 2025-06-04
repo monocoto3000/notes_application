@@ -22,8 +22,16 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final int noteId = ModalRoute.of(context)!.settings.arguments as int;
-    context.read<UpdateNotesCubit>().loadNoteAndCategories(noteId);
+    
+    final args = ModalRoute.of(context)?.settings.arguments;
+
+    if (args is int) {
+      print(args.runtimeType);
+      final int noteId = args;
+      context.read<UpdateNotesCubit>().loadNoteAndCategories(noteId);
+    } else {
+      print("Error: no se recibió un noteId válido.");
+    }
   }
 
   @override
@@ -52,6 +60,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
       builder: (context, state) {
         if (state is EditCategoriesLoaded) {
           return Scaffold(
+            backgroundColor: Colors.white,
             body: _buildForm(state.categories),
           );
         } else if (state is EditNotesLoading) {

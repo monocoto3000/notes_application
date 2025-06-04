@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:notes_application/core/constants/api.urls.dart';
 import 'package:notes_application/core/network/dio.client.dart';
 import 'package:notes_application/features/notes/data/models/notes.model.dart';
+import 'package:notes_application/core/error/failures.dart';
 import 'package:notes_application/injection.container.dart';
 
 abstract class NoteApiService {
@@ -52,15 +53,17 @@ class NoteApiServiceImpl extends NoteApiService {
   }
 
   @override
-  Future<Either> updateNote(int id, Note note) async {
+  Future<Either<Failure, Note>> updateNote(int id, Note note) async {
     try {
       var response = await sl<DioClient>().put(
         '${ApiUrls.notes}/$id',
         data: note.toMap(),
       );
-      return Right(response);
+      final noteData = response.data;
+      final updatedNote = Note.fromJson(noteData);
+      return Right(updatedNote);
     } on DioException catch (e) {
-      return Left(e.response);
+      return Left(e.response as Failure);
     }
   }
 

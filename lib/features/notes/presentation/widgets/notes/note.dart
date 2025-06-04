@@ -28,8 +28,8 @@ Widget buildNoteCard(Note note, VoidCallback onTap) {
             Row(
               children: [
                 Container(
-                  width: 8,
-                  height: 8,
+                  width: 16, 
+                  height: 16,
                   decoration: BoxDecoration(
                     color: getCategoryColor(note.categoryColor),
                     shape: BoxShape.circle,
@@ -44,13 +44,22 @@ Widget buildNoteCard(Note note, VoidCallback onTap) {
                   ),
                 ),
                 const Spacer(),
-                Text(
-                  '${note.createdAt.day}/${note.createdAt.month}/${note.createdAt.year}',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 7,
-                    fontWeight: FontWeight.w700,
+                Chip(
+                  backgroundColor: getCategoryColor(note.categoryColor),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(color: Colors.transparent),
                   ),
+                  label: Text(
+                    '${note.createdAt.day.toString().padLeft(2, '0')}/${note.createdAt.month.toString().padLeft(2, '0')}/${note.createdAt.year}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
               ],
             ),
@@ -59,7 +68,7 @@ Widget buildNoteCard(Note note, VoidCallback onTap) {
               note.content,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 9),
+              style: const TextStyle(fontSize: 11),
             ),
           ],
         ),

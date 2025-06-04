@@ -163,11 +163,15 @@ class _NotesPageState extends State<NotesPage> {
     return Column(
       children: notes.map((note) => buildNoteCard(
         note,
-        () {
-          Navigator.of(context).pushNamed(
+        () async {
+          final result = await Navigator.of(context).pushNamed(
             '/noteDetails',
             arguments: note.id,
           );
+
+          if (result == true) {
+            _notesCubit.loadData();
+          }
         },
       )).toList(),
     );

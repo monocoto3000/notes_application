@@ -15,10 +15,12 @@ class NoteDetailsPage extends StatelessWidget {
       child: BlocBuilder<NoteDetailsCubit, NoteDetailsState>(
         builder: (context, state) {
           if (state is NoteDeleted) {
-            Navigator.of(context).pop(true);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Nota eliminada correctamente')),
-            );
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pop(true);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Nota eliminada correctamente')),
+              );
+            });
           }
           if (state is NoteDetailsLoading) {
             return const Scaffold(
@@ -129,6 +131,10 @@ class NoteDetailsPage extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: Chip(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(color: Colors.transparent),
+                          ),
                           backgroundColor: color,
                           label: Text(
                             '${note.createdAt.day.toString().padLeft(2, '0')}-${note.createdAt.month.toString().padLeft(2, '0')}-${note.createdAt.year}',

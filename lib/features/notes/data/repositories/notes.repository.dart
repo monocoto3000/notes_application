@@ -27,7 +27,7 @@ class NoteRepositoryImpl extends NoteRepository {
     final either = await sl<NoteApiService>().updateNote(id, note);
     return either.fold(
       (failure) => Left(failure),
-      (data) => Right(Note.fromJson(data)), 
+      (data) => Right(data), 
     );
   }
 
