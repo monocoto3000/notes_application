@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_application/features/auth/domain/usecases/logout.usecase.dart';
 import 'package:notes_application/features/category/data/models/category.model.dart';
 import 'package:notes_application/features/notes/data/models/notes.model.dart';
 import 'package:notes_application/features/notes/presentation/cubit/notes/notes_cubit.dart';
+import 'package:notes_application/features/notes/presentation/widgets/createCategory.page/create.category.widget.dart';
 import 'package:notes_application/features/notes/presentation/widgets/notes/note.dart';
 import 'package:notes_application/injection.container.dart';
 import 'package:notes_application/features/category/domain/usecases/getAllCat.usecase.dart';
@@ -26,6 +28,7 @@ class _NotesPageState extends State<NotesPage> {
       getAllNotes: sl<GetAllNotesUseCase>(),
       getNotesByCategory: sl<GetNotesByCatUseCase>(),
       getAllCategories: sl<GetAllCategoriesUseCase>(),
+      logoutUseCase: sl<LogoutUseCase>(),
     );
     _notesCubit.loadData();
   }
@@ -41,6 +44,33 @@ class _NotesPageState extends State<NotesPage> {
     return BlocProvider.value(
       value: _notesCubit,
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Notas'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await _notesCubit.logout();
+                if (!mounted) return;
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.add_circle_outline),
+              tooltip: 'Nueva categoría',
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (_) => NewCategoryModal(
+                    onCategoryCreated: (category) {
+                      _notesCubit.loadData(); 
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
         backgroundColor: Colors.white,
         body: BlocConsumer<NotesCubit, NotesState>(
           listener: (context, state) {

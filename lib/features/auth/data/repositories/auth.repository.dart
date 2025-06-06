@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+ import 'package:dartz/dartz.dart';
 import 'package:notes_application/features/auth/data/datasources/auth.api.service.dart';
 import 'package:notes_application/features/auth/data/models/request.model.dart';
 import 'package:notes_application/features/auth/domain/repositories/auth.dart';

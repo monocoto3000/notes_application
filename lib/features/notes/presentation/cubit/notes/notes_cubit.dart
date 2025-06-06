@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:notes_application/core/usecase/noparams.dart';
+import 'package:notes_application/features/auth/domain/usecases/logout.usecase.dart';
 import 'package:notes_application/features/category/data/models/category.model.dart';
 import 'package:notes_application/features/category/domain/usecases/getAllCat.usecase.dart';
 import 'package:notes_application/features/notes/data/models/notes.model.dart';
@@ -13,14 +14,17 @@ class NotesCubit extends Cubit<NotesState> {
   final GetAllNotesUseCase _getAllNotes;
   final GetNotesByCatUseCase _getNotesByCategory;
   final GetAllCategoriesUseCase _getAllCategories;
+  final LogoutUseCase _logoutUseCase;
 
   NotesCubit({
     required GetAllNotesUseCase getAllNotes,
     required GetNotesByCatUseCase getNotesByCategory,
     required GetAllCategoriesUseCase getAllCategories,
+    required LogoutUseCase logoutUseCase,
   })  : _getAllNotes = getAllNotes,
         _getNotesByCategory = getNotesByCategory,
         _getAllCategories = getAllCategories,
+        _logoutUseCase = logoutUseCase,
         super(NotesInitial());
 
   Future<void> loadData() async {
@@ -52,5 +56,9 @@ class NotesCubit extends Cubit<NotesState> {
       emit(NotesError('Error al filtrar por categoría: ${e.toString()}'));
       emit(NotesLoaded(currentState.notes, currentState.selectedCategory, currentState.categories));
     }
+  }
+
+  Future<void> logout() async {
+    await _logoutUseCase(NoParams());
   }
 }

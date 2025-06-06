@@ -68,12 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: BoxDecoration(
                           color: Colors.black,
                           shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 16,
-                        ),
+                        )
                       ),
                     ),
                     
@@ -182,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                           return 'Por favor ingresa tu contraseña';
                         }
                         if (value.length < 4) {
-                          return 'La contraseña debe tener al menos 6 caracteres';
+                          return 'La contraseña debe tener al menos 4 caracteres';
                         }
                         return null;
                       },
@@ -190,7 +185,6 @@ class _LoginPageState extends State<LoginPage> {
                     
                     SizedBox(height: 32),
                     
-                    // Botón de login
                     BlocBuilder<AuthCubitLogin, AuthState>(
                       builder: (context, state) {
                         return SizedBox(

@@ -4,6 +4,7 @@ import 'package:notes_application/features/auth/data/datasources/auth.api.servic
 import 'package:notes_application/features/auth/data/repositories/auth.repository.dart';
 import 'package:notes_application/features/auth/domain/repositories/auth.dart';
 import 'package:notes_application/features/auth/domain/usecases/login.usecase.dart';
+import 'package:notes_application/features/auth/domain/usecases/logout.usecase.dart';
 import 'package:notes_application/features/auth/domain/usecases/register.usecase.dart';
 import 'package:notes_application/features/auth/presentation/cubit/login/auth_cubit.dart';
 import 'package:notes_application/features/auth/presentation/cubit/register/auth_cubit.dart';
@@ -114,11 +115,15 @@ void setupServiceLocator() {
     GetCategoryByIdUseCase()
   );
 
+  // Logout
+  sl.registerLazySingleton(() => LogoutUseCase());
+
   // Notes Cubit
   sl.registerFactory(() => NotesCubit(
     getAllNotes: sl<GetAllNotesUseCase>(),
     getNotesByCategory: sl<GetNotesByCatUseCase>(),
     getAllCategories: sl<GetAllCategoriesUseCase>(),
+    logoutUseCase: sl<LogoutUseCase>(),
   ));
 
   // Notes Details Cubit

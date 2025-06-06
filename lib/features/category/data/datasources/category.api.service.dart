@@ -43,7 +43,7 @@ class CategoryApiServiceImpl extends CategoryApiService {
         ApiUrls.categories, 
         data: category.toMap(),
       );
-      return Right(response);
+      return Right(Category.fromJson(response.data));
     } on DioException catch (e) {
       return Left(e.response);
     }
